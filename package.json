@@ -10,5 +10,11 @@
     "url": "git+https://github.com/mirrorworld-universe/sonic-bridge-validator.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-kms": "^3.624.0",
+    "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
 }
