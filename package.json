@@ -1,0 +1,14 @@
+{
+  "name": "sonic-bridge-validator",
+  "version": "1.0.0",
+  "description": "sonic bridge validator",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mirrorworld-universe/sonic-bridge-validator.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
