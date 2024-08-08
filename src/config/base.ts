@@ -11,6 +11,15 @@ const base = {
 	},
 	wallet: {
 		private_key: process.env.WALLET_PRIVATE_KEY,
+	},
+	aws: {
+		access_key_id: process.env.AWS_ACCESS_KEY_ID,
+		secret_access_key: process.env.AWS_SECRET_ACCESS_KEY,
+		region: process.env.AWS_REGION,
+	},
+	sns: {
+		topic: process.env.SNS_TOPIC,
+		group: process.env.SNS_GROUP,
 	}
 }
 

@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import router from "./routers";
+import {logger} from "./utils/logger";
 
 
 const app = express();
@@ -23,7 +24,7 @@ const port = 3060;
 
 start().then(() => {
 	app.listen(port, () => {
-		console.log("validator service start successful");
+		logger.info("validator service start successful")
 	})
 	
 })
