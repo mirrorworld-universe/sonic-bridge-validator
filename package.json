@@ -4,7 +4,9 @@
   "description": "sonic bridge validator",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "local": "nodemon src/app.ts"
+    "build": "tsc",
+    "local": "nodemon src/app.ts",
+    "start:prod": "node dist/app.js"
   },
   "repository": {
     "type": "git",

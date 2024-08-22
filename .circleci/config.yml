@@ -1,0 +1,29 @@
+version: 2.1
+orbs:
+  kubernetes: circleci/kubernetes@1.3.0
+
+general:
+  artifacts:
+    - "coverage/lcov-report"
+
+jobs:
+  build:
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - checkout
+      - kubernetes/install-kubectl
+      - run:
+          name: Build and push sonic bridge validator service
+          command: make all
+
+workflows:
+  version: 2
+  test_and_build:
+    jobs:
+      - build:
+          context: docker
+          filters:
+            branches:
+              only: main
+
