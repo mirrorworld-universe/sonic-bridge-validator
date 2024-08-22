@@ -20,6 +20,12 @@ const base = {
 	sns: {
 		topic: process.env.SNS_TOPIC,
 		group: process.env.SNS_GROUP,
+	},
+	bridge: {
+		sonic_network: process.env.SONIC_NETWORK,
+		sonic_rpc: process.env.SONIC_RPC,
+		solana_network: process.env.SOLANA_NETWORK,
+		solana_rpc: process.env.SOLANA_RPC
 	}
 }
 

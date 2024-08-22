@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 import router from "./routers";
 import {logger} from "./utils/logger";
+import {initBridgeClient} from "./utils/bridge";
 
 
 const app = express();
@@ -17,7 +18,7 @@ app.use(cors({
 app.use(router);
 
 async function start() {
-
+	await initBridgeClient();
 }
 
 const port = 3060;
