@@ -21,7 +21,7 @@ export async function processSonicBridgeEvent(
 		let wallet = event["depositor"].toString();
 		let destination = event["destinationDomain"]
 		let messageSentAccount = event["eventAccount"].toString();
-		let nonce = event[" nonce"].toString();
+		let nonce = event["nonce"].toString();
 		const key = `${base.bridge.sonic_network}_${base.bridge.solana_network}_${wallet}_${messageSentAccount}`;
 		let message_id = crypto.createHash("sha256").update(key).digest("hex");
 		
