@@ -21,6 +21,7 @@ export async function processSonicBridgeEvent(
 		let wallet = event["depositor"].toString();
 		let destination = event["destinationDomain"]
 		let messageSentAccount = event["eventAccount"].toString();
+		let nonce = event[" nonce"].toString();
 		const key = `${base.bridge.sonic_network}_${base.bridge.solana_network}_${wallet}_${messageSentAccount}`;
 		let message_id = crypto.createHash("sha256").update(key).digest("hex");
 		
@@ -37,6 +38,7 @@ export async function processSonicBridgeEvent(
 		
 		let data = {
 			message_id: message_id,
+			nonce: nonce,
 			signer: await SecretKeyService.getSigner(),
 			message: messageHex,
 			signed_message: base58.encode(signedMessage),
@@ -52,7 +54,7 @@ export async function processSonicBridgeEvent(
 		await sendMessage(
 			base.sns.topic,
 			base.sns.group,
-			message_id,
+			`${base.sns.group}_${message_id}`,
 			data
 		)
 	} catch (e) {
