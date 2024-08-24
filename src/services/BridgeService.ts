@@ -9,53 +9,66 @@ import {logger} from "../utils/logger";
 
 const crypto = require("crypto");
 
+export async function processDepositForLockEvent(
+	isSonic: boolean,
+	event: any,
+	signature: string,
+) {
+	const fromChainNetwork = isSonic ? base.bridge.sonic_network : base.bridge.solana_network;
+	const toChainNetwork = isSonic ? base.bridge.solana_network : base.bridge.sonic_network;
+	let amount = event["amount"].toNumber();
+	let token = event["lockToken"].toString();
+	let wallet = event["depositor"].toString();
+	let destination = event["destinationDomain"]
+	let messageSentAccount = event["eventAccount"].toString();
+	let nonce = event["nonce"].toString();
+	const key = `${fromChainNetwork}_${toChainNetwork}_${wallet}_${messageSentAccount}`;
+	let message_id = crypto.createHash("sha256").update(key).digest("hex");
+	
+	// step 2、read and sign message
+	console.log("message account: ", messageSentAccount)
+	let message = await readMessage(fromChainNetwork, new PublicKey(messageSentAccount as string));
+	if (!message) {
+		return
+	}
+	
+	let messageHex = message.toString("hex");
+	let secretKey = await SecretKeyService.getSecretKey();
+	let signedMessage = await signMessage(fromChainNetwork, messageHex, secretKey);
+	
+	let data = {
+		message_id: message_id,
+		nonce: nonce,
+		signer: await SecretKeyService.getSigner(),
+		message: messageHex,
+		signed_message: base58.encode(signedMessage),
+		signature: signature,
+		from_chain: fromChainNetwork,
+		to_chain: toChainNetwork,
+		token: token,
+		amount: amount,
+		wallet: wallet,
+	}
+	console.log("data:", data);
+	// step 3、send message
+	await sendMessage(
+		base.sns.topic,
+		base.sns.group,
+		`${base.sns.group}_${message_id}`,
+		data
+	)
+}
+
 export async function processSonicBridgeEvent(
 	event: any,
 	signature: string,
 ) {
 	
 	try {
-		// step 1、parse data
-		let amount = event["amount"].toNumber();
-		let token = event["lockToken"].toString();
-		let wallet = event["depositor"].toString();
-		let destination = event["destinationDomain"]
-		let messageSentAccount = event["eventAccount"].toString();
-		let nonce = event["nonce"].toString();
-		const key = `${base.bridge.sonic_network}_${base.bridge.solana_network}_${wallet}_${messageSentAccount}`;
-		let message_id = crypto.createHash("sha256").update(key).digest("hex");
-		
-		// step 2、read and sign message
-		console.log("message account: ", messageSentAccount)
-		let message = await readMessage(base.bridge.sonic_network, new PublicKey(messageSentAccount as string));
-		if (!message) {
-			return
-		}
-		
-		let messageHex = message.toString("hex");
-		let secretKey = await SecretKeyService.getSecretKey();
-		let signedMessage = await signMessage(base.bridge.sonic_network, messageHex, secretKey);
-		
-		let data = {
-			message_id: message_id,
-			nonce: nonce,
-			signer: await SecretKeyService.getSigner(),
-			message: messageHex,
-			signed_message: base58.encode(signedMessage),
-			signature: signature,
-			from_chain: base.bridge.sonic_network,
-			to_chain: base.bridge.solana_network,
-			token: token,
-			amount: amount,
-			wallet: wallet,
-		}
-		console.log("data:", data);
-		// step 3、send message
-		await sendMessage(
-			base.sns.topic,
-			base.sns.group,
-			`${base.sns.group}_${message_id}`,
-			data
+		await processDepositForLockEvent(
+			true,
+			event,
+			signature
 		)
 	} catch (e) {
 		logger.error("process sonic event error:", e)
@@ -69,44 +82,10 @@ export async function processSolanaBridgeEvent(
 ) {
 	
 	try {
-		// step 1、parse data
-		let amount = event["amount"].toNumber();
-		let token = event["lockToken"].toString();
-		let wallet = event["depositor"].toString();
-		let destination = event["destinationDomain"]
-		let messageSentAccount = event["eventAccount"].toString();
-		const key = `${base.bridge.solana_network}_${base.bridge.sonic_network}_${wallet}_${messageSentAccount}`;
-		let message_id = crypto.createHash("sha256").update(key).digest("hex");
-		
-		// step 2、read and sign message
-		let message = await readMessage(base.bridge.solana_network, new PublicKey(messageSentAccount));
-		if (!message) {
-			return
-		}
-		
-		let messageHex = message.toString("hex");
-		let secretKey = await SecretKeyService.getSecretKey();
-		let signedMessage = await signMessage(base.bridge.solana_network, messageHex, secretKey);
-		
-		let data = {
-			message_id: message_id,
-			signer: await SecretKeyService.getSigner(),
-			message: messageHex,
-			signed_message: base58.encode(signedMessage),
-			signature: signature,
-			from_chain: base.bridge.solana_network,
-			to_chain: base.bridge.sonic_network,
-			token: token,
-			amount: amount,
-			wallet: wallet,
-		}
-		
-		// step 3、send message
-		await sendMessage(
-			base.sns.topic,
-			base.sns.group,
-			message_id,
-			data
+		await processDepositForLockEvent(
+			false,
+			event,
+			signature
 		)
 	} catch (e) {
 		logger.error("process solana event error:", e)
