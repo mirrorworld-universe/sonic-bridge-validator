@@ -28,17 +28,12 @@ export async function initBridgeClient() {
 
 const sonicDepositForLockEvent = (event: any, slot: number, signature: string) => {
 	logger.info("receive sonic chain bridge message, signature:", signature, " event data:", event)
-	setImmediate( () => {
-		processSonicBridgeEvent(event, signature)
-	})
+	setImmediate(processSonicBridgeEvent, event, signature)
 }
 
 const solanaDepositForLockEvent = (event: any, slot: number, signature: string) => {
 	logger.info("receive solana chain bridge message, signature:", signature, " event data:", event)
-	
-	setImmediate( () => {
-		processSolanaBridgeEvent(event, signature)
-	})
+	setImmediate(processSolanaBridgeEvent, event, signature)
 }
 
 

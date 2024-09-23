@@ -26,7 +26,6 @@ export async function processDepositForLockEvent(
 	let message_id = crypto.createHash("sha256").update(key).digest("hex");
 	
 	// step 2、read and sign message
-	console.log("message account: ", messageSentAccount)
 	let message = await readMessage(fromChainNetwork, new PublicKey(messageSentAccount as string));
 	if (!message) {
 		return
@@ -35,6 +34,9 @@ export async function processDepositForLockEvent(
 	let messageHex = message.toString("hex");
 	let secretKey = await SecretKeyService.getSecretKey();
 	let signedMessage = await signMessage(fromChainNetwork, messageHex, secretKey);
+	if (!signedMessage) {
+		return
+	}
 	
 	let data = {
 		message_id: message_id,
@@ -49,7 +51,7 @@ export async function processDepositForLockEvent(
 		amount: amount,
 		wallet: wallet,
 	}
-	console.log("data:", data);
+
 	// step 3、send message
 	await sendMessage(
 		base.sns.topic,
