@@ -28,7 +28,7 @@ The Sonic Bridge Validator is a service that listens for bridge events emitted b
 
 ## Prerequisites
 
-- Node.js (version X.X.X or higher)
+- Node.js (version 18.14.0 or higher)
 - AWS account with KMS access
 - Basic understanding of blockchain bridges and validator operations
 
@@ -59,10 +59,27 @@ The validator service uses AWS KMS (Key Management Service) to securely manage y
 Create a `.env` file in the root directory and add the following variables:
 
 ```
+# wallet setings
 WALLET_PRIVATE_KEY=your_encrypted_private_key
-AWS_REGION=your_aws_region
-AWS_ACCESS_KEY_ID=your_aws_access_key
-AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+KMS_KEY_ID=your_kms_key_id
+KMS_REGION=your_kms_region
+KMS_AWS_ACCESS_KEY_ID=your_aws_key_id
+KMS_AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+
+# network and rpc
+# sonic networks: sonic_devnet, sonic_testnet, sonic_mainnet
+SONIC_NETWORK=sonic_network
+SONIC_RPC=sonic_rpc_url
+# solana networks: solana_devnet, solana_testnet, solana_mainnet
+SOLANA_NETWORK=solana_network
+SOLANA_RPC=solana_rpc_url
+
+# AWS SNS settings, provided by mirrorworld
+AWS_ACCESS_KEY_ID=aws_sns_key_id
+AWS_SECRET_ACCESS_KEY=aws_sns_access_key
+AWS_REGION=aws_sns_region
+SNS_TOPIC=aws_sns_topic
+SNS_GROUP=aws_sns_group
 ```
 
 ## Usage
