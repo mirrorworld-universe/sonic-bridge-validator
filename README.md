@@ -1,47 +1,131 @@
-# sonic-bridge-validator
+# Sonic Bridge Validator
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+  - [Wallet Private Key](#wallet-private-key)
+  - [Environment Variables](#environment-variables)
+- [Usage](#usage)
+- [Security Considerations](#security-considerations)
+- [Infrastructure Requirements](#infrastructure-requirements)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Introduction
 
-The sonic bridge validator service listen for bridge events emitted by the contracts. Once an event is detected, the validator 
-service will verify this event, sign the event message and send the signed message to relayer services.
+The Sonic Bridge Validator is a service that listens for bridge events emitted by smart contracts. Upon detecting an event, the validator verifies it, signs the event message, and sends the signed message to relayer services. This crucial component ensures the integrity and security of cross-chain transactions in the Sonic Bridge ecosystem.
 
+## Features
 
-## Wallet Private Key
-	
-The validator service use AWS KMS(AWS Key Management Service) to keep your wallet private key.
+- Real-time monitoring of bridge events
+- Event verification and signature
+- Secure key management using AWS KMS
+- Efficient message relay to relayer services
 
-### Generate And Set Private Key
+## Prerequisites
 
-<ol>
-<li>generate encrypted wallet private key with KMS;</li>
-<li>set the encrypted private key to ENV.WALLET_PRIVATE_KEY;</li>
-</ol>
+- Node.js (version 18.14.0 or higher)
+- AWS account with KMS access
+- Basic understanding of blockchain bridges and validator operations
 
-### Wallet Private Key Security
+## Installation
 
-While AWS KMS provides a secure environment for key management, it's essential to follow best practices to ensure the 
-private key remains secure. Here are some key points to remember:
+1. Clone the repository:
+   ```
+   git clone https://github.com/mirrorworld-universe/sonic-bridge-validator.git
+   cd sonic-bridge-validator
+   ```
 
-- **Safeguard Key Usage Permissions**: Ensure that only trusted users or applications have the right to perform sensitive 
-operations with the private key. Use least privilege access principles to grant only necessary permissions.
+2. Install dependencies:
+   ```
+   npm install
+   ```
 
-- **Regularly Review IAM and KMS Permissions**: Periodically audit the permissions associated with your KMS keys to prevent 
- stale or excessive permissions. This ensures that only authorized users or systems have access to the keys.
+## Configuration
 
-- **Set Up CloudWatch Alerts**: Use AWS CloudWatch to monitor unusual activity related to your KMS keys. For example, 
-set alerts for key creation, deletion, or unauthorized access attempts. This allows for quick action if there are any security anomalies.
+### Wallet Private Key
 
+The validator service uses AWS KMS (Key Management Service) to securely manage your wallet's private key. Follow these steps to set up your private key:
 
-## Infrastructure
+1. Generate an encrypted wallet private key using AWS KMS.
+2. Set the encrypted private key to the `WALLET_PRIVATE_KEY` environment variable.
 
-The sonic validator service does not require high hardware requirements, You can run the validator service on physical 
-machine or virtual machine. just make sure the network is smooth.
+### Environment Variables
 
-### Hardware Requirements
+Create a `.env` file in the root directory and add the following variables:
+
+```
+# wallet setings
+WALLET_PRIVATE_KEY=your_encrypted_private_key
+KMS_KEY_ID=your_kms_key_id
+KMS_REGION=your_kms_region
+KMS_AWS_ACCESS_KEY_ID=your_aws_key_id
+KMS_AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+
+# network and rpc
+# sonic networks: sonic_devnet, sonic_testnet, sonic_mainnet
+SONIC_NETWORK=sonic_network
+SONIC_RPC=sonic_rpc_url
+# solana networks: solana_devnet, solana_testnet, solana_mainnet
+SOLANA_NETWORK=solana_network
+SOLANA_RPC=solana_rpc_url
+
+# AWS SNS settings, provided by mirrorworld
+AWS_ACCESS_KEY_ID=aws_sns_key_id
+AWS_SECRET_ACCESS_KEY=aws_sns_access_key
+AWS_REGION=aws_sns_region
+SNS_TOPIC=aws_sns_topic
+SNS_GROUP=aws_sns_group
+```
+
+## Usage
+
+To start the validator service:
+
+```
+npm start
+```
+
+## Security Considerations
+
+While AWS KMS provides a secure environment for key management, it's essential to follow these best practices:
+
+1. **Safeguard Key Usage Permissions**: Implement least privilege access principles, granting only necessary permissions to trusted users or applications.
+
+2. **Regularly Review IAM and KMS Permissions**: Periodically audit permissions associated with your KMS keys to prevent stale or excessive access.
+
+3. **Set Up CloudWatch Alerts**: Use AWS CloudWatch to monitor unusual activity related to your KMS keys. Set alerts for key creation, deletion, or unauthorized access attempts.
+
+## Infrastructure Requirements
+
+The Sonic Bridge Validator has modest hardware requirements and can run on physical or virtual machines with a stable network connection.
 
 Recommended Configuration:
-
 - **CPU**: 1 core
-- **Memory**: 1GB
+- **Memory**: 1GB RAM
 - **Storage**: 10GB
-- **Network**: 100Mbps
+- **Bandwidth**: 100Mbps
+
+## Troubleshooting
+
+If you encounter issues:
+
+1. Check the logs for error messages
+2. Verify your AWS credentials and permissions
+3. Ensure your network connection is stable
+4. Reach out to Sonic Engineering Support team at [operators@sonic.game](mailto:operators@sonic.game)
+5. Open an issue on this GitHub repository)
+
+For additional help, please open an issue on our GitHub repository.
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for more details.
+
+## License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
