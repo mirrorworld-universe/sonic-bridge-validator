@@ -1,7 +1,7 @@
 
 import * as anchor from "@coral-xyz/anchor";
 import base from "../config/base";
-import {Client} from "mirrorworld-sonic-bridge";
+import {Client} from "@mirrorworld/sonic.bridge";
 import {PublicKey} from "@solana/web3.js";
 import {logger} from "./logger";
 import {processSolanaBridgeEvent, processSonicBridgeEvent} from "../services/BridgeService";

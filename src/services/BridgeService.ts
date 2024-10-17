@@ -1,4 +1,3 @@
-import {Networks} from "mirrorworld-sonic-bridge";
 import base from "../config/base";
 import {readMessage, signMessage} from "../utils/bridge";
 import {PublicKey} from "@solana/web3.js";
