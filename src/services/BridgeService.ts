@@ -49,6 +49,7 @@ export async function processDepositForLockEvent(
 		token: token,
 		amount: amount,
 		wallet: wallet,
+		sent_account: messageSentAccount,
 	}
 
 	// step 3、send message
