@@ -19,7 +19,7 @@
     "@aws-sdk/client-kms": "^3.624.0",
     "@aws-sdk/client-sns": "^3.624.0",
     "@coral-xyz/anchor": "^0.28.0",
-    "@mirrorworld/sonic.bridge": "^0.0.2",
+    "@mirrorworld/sonic.bridge": "^0.0.6",
     "@solana/spl-token": "^0.4.8",
     "@solana/web3.js": "^1.95.3",
     "consola": "^3.2.3",
