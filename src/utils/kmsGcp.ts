@@ -32,6 +32,7 @@ export class GCPKMSService implements IKMSService {
         });
 
         const ciphertext = encryptResponse.ciphertext;
+
         if (!encryptResponse.verifiedPlaintextCrc32c) {
             throw new Error('Encrypt: request corrupted in-transit');
         }
@@ -41,12 +42,20 @@ export class GCPKMSService implements IKMSService {
         ) {
             throw new Error('Encrypt: response corrupted in-transit');
         }
-        return ciphertext.toString();
+
+        if (ciphertext instanceof Uint8Array) {
+            return Buffer.from(ciphertext).toString("base64");
+        } else if (typeof ciphertext === 'string') {
+            return ciphertext;
+        } else {
+            throw new Error('Unexpected ciphertext format');
+        }
     }
 
     async decryptMessage(message: string): Promise<string> {
         const ciphertext = Buffer.from(message, "base64");
         const ciphertextCrc32c = crc32c.calculate(ciphertext);
+
         const [decryptResponse] = await this.client.decrypt({
             name: this.keyName,
             ciphertext: ciphertext,
@@ -61,7 +70,9 @@ export class GCPKMSService implements IKMSService {
             throw new Error('Decrypt: response corrupted in-transit');
         }
 
-        const plaintext = decryptResponse.plaintext.toString();
+        const plaintextBuffer = Buffer.from(decryptResponse.plaintext as Uint8Array);
+        const plaintext = plaintextBuffer.toString();
+
         return plaintext;
     }
 }
