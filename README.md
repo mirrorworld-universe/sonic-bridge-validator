@@ -61,10 +61,18 @@ Create a `.env` file in the root directory and add the following variables:
 ```
 # wallet setings
 WALLET_PRIVATE_KEY=your_encrypted_private_key
-KMS_KEY_ID=your_kms_key_id
-KMS_REGION=your_kms_region
+
+# provider AWS/GCP
+KMS_PROVIDER=AWS
+KMS_AWS_KEY_ID=your_aws_kms_key_id
+KMS_AWS_REGION=your_aws_kms_region
 KMS_AWS_ACCESS_KEY_ID=your_aws_key_id
 KMS_AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+KMS_GCP_PROJECT_ID=your_kms_key_id
+KMS_GCP_LOCATION_ID=you_gcp_kms_location_id
+KMS_GCP_KEYRING_ID=you_gcp_kms_keyring_id
+KMS_GCP_KEY_ID=you_gcp_kms_key_id
+GOOGLE_APPLICATION_CREDENTIALS=you_google_application_credentials_file_path
 
 # network and rpc
 # sonic networks: sonic_devnet, sonic_testnet, sonic_mainnet
