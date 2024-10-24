@@ -1,13 +1,20 @@
-
-
 require("dotenv").config();
 
 const base = {
 	kms: {
-		key_id: process.env.KMS_KEY_ID,
-		region: process.env.KMS_REGION,
-		access_key_id: process.env.KMS_AWS_ACCESS_KEY_ID,
-		secret_access_key: process.env.KMS_AWS_SECRET_ACCESS_KEY,
+		provider: process.env.KMS_PROVIDER,
+		aws: {
+			key_id: process.env.KMS_AWS_KEY_ID,
+			region: process.env.KMS_AWS_REGION,
+			access_key_id: process.env.KMS_AWS_ACCESS_KEY_ID,
+			secret_access_key: process.env.KMS_AWS_SECRET_ACCESS_KEY
+		},
+		gcp: {
+			project_id: process.env.KMS_GCP_PROJECT_ID,
+			location_id: process.env.KMS_GCP_LOCATION_ID,
+			keyring_id: process.env.KMS_GCP_KEYRING_ID,
+			key_id: process.env.KMS_GCP_KEY_ID,
+		}
 	},
 	wallet: {
 		private_key: process.env.WALLET_PRIVATE_KEY,

@@ -19,6 +19,7 @@
     "@aws-sdk/client-kms": "^3.624.0",
     "@aws-sdk/client-sns": "^3.624.0",
     "@coral-xyz/anchor": "^0.28.0",
+    "@google-cloud/kms": "^4.5.0",
     "@mirrorworld/sonic.bridge": "^0.0.6",
     "@solana/spl-token": "^0.4.8",
     "@solana/web3.js": "^1.95.3",
@@ -26,6 +27,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "fast-crc32c": "^2.0.0",
     "morgan": "^1.10.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
