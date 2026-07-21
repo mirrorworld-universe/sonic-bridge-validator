@@ -1,0 +1,30 @@
+name: deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-22.04-arm
+    timeout-minutes: 90
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      AWS_REGION: us-west-2
+      DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: aws-actions/configure-aws-credentials@v5.1.0
+        with:
+          aws-region: us-west-2
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          role-session-name: sonic-bridge-validator-build
+
+      - name: Build and push images
+        timeout-minutes: 60
+        run: make all
